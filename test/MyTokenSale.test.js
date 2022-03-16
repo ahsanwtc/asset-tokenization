@@ -15,4 +15,16 @@ contract('MyTokenSale', accounts => {
     const instance = await MyToken.deployed();
     await expect(instance.balanceOf(admin)).to.eventually.be.a.bignumber.equal(new BN(0));
   });
+
+  it('should have all the tokens in MyTokenSale contract', async () => {
+    const instance = await MyToken.deployed();
+    const balanceOfMyTokenSaleContract = await instance.balanceOf(MyTokenSale.address);
+    const totalSupply = await instance.totalSupply();
+    expect(totalSupply).to.be.a.bignumber.equal(balanceOfMyTokenSaleContract);
+  });
+
+  it('should be possible to buy tokens', async () => {
+
+  });
+
 });
