@@ -6,6 +6,7 @@ require('dotenv').config({ path: '../.env' });
 
 const MyToken = artifacts.require('MyToken');
 const MyTokenSale = artifacts.require('MyTokenSale');
+const KYCContract = artifacts.require('KYCContract');
 const BN = web3.utils.BN;
 
 contract('MyTokenSale', accounts => {
@@ -24,7 +25,13 @@ contract('MyTokenSale', accounts => {
   });
 
   it('should be possible to buy tokens', async () => {
-
+    const myTokenInstance = await MyToken.deployed();
+    const myTokenSaleInstance = await MyTokenSale.deployed();
+    const kycInstace = await KYCContract.deployed();
+    const balanceBefore = await myTokenInstance.balanceOf(recipient);
+    await kycInstace.setKYCCompleted(recipient, { from: admin });
+    await expect(myTokenSaleInstance.sendTransaction({ from: recipient, value: web3.utils.toWei('1', 'wei') })).to.be.fulfilled;
+    await expect(myTokenInstance.balanceOf(recipient)).to.eventually.be.a.bignumber.equal(balanceBefore.add(new BN(1)));
   });
 
 });
