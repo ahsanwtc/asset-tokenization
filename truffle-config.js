@@ -57,7 +57,13 @@ module.exports = {
         return new hdWalletProvider(process.env.MNEMONIC, "http://127.0.0.1:7545", MetaMaskAccountIndex);
       },
       network_id: 5777
-    }
+    },
+    ropsten_infura: {
+      provider: function() {
+        return new HDWalletProvider(process.env.MNEMONIC, "https://ropsten.infura.io/v3/0d55130009264ca89cd236b4dd7f0513", MetaMaskAccountIndex)
+      },
+      network_id: 3
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

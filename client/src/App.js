@@ -11,6 +11,7 @@ function App() {
   const [accounts, setAccounts] = useState([]);
   const [kycAddress, setKycAddress] = useState('');
   const [salesAddress, setSalesAddress] = useState('');
+  const [userTokens, setUserTokens] = useState(0);
 
   useEffect(() => {    
     const init = async () => {
@@ -27,6 +28,18 @@ function App() {
     init();
   }, []);
 
+  useEffect(() => {
+    const init = async () => {
+      await updateUserTokens();
+      listenToTokenTransfer();
+    };
+
+    if (contracts !== undefined && accounts.length > 0) {
+      init();
+    }
+
+  }, [contracts, accounts]);
+
   const handleSubmitOnClick = async () => {
 
     if (kycAddress.length === 0) {
@@ -35,6 +48,19 @@ function App() {
 
     await contracts.kyc.methods.setKYCCompleted(kycAddress).send({ from: accounts[0] });
     setKycAddress('');
+  };
+
+  const handleBuyMoreOnClick = async () => {
+    await contracts.tokenSale.methods.buyTokens(accounts[0]).send({ from: accounts[0], value: web3.utils.toWei('1', 'wei') });
+  };
+
+  const updateUserTokens = async () => {
+    const tokens = await contracts.token.methods.balanceOf(accounts[0]).call();
+    setUserTokens(tokens);
+  };
+
+  const listenToTokenTransfer = () => {
+    contracts.token.events.Transfer({ to: accounts[0] }).on('data', updateUserTokens);
   };
 
   if (web3 === undefined || contracts === undefined || accounts.length === 0) {
@@ -65,14 +91,28 @@ function App() {
 
         </Card>
         <Card sx={{ mt: 2, bgcolor: '#33CCC9' }}>
-          <Box sx={{ p: 2, display: 'flex' }}>
-            {/* <Stack> */}
-              <Typography fontWeight={500}>
-                Send Wei to {salesAddress} to receive tokens.
-              </Typography>
-            {/* </Stack> */}
+          <Box sx={{ p: 2, display: 'flex' }}>            
+            <Typography fontWeight={500}>
+              Send Wei to {salesAddress} to receive tokens.
+            </Typography>
           </Box>
         </Card>
+
+        <Card sx={{ mt: 2, bgcolor: '#a2cf6e', maxWidth: 500 }}>
+          <Box sx={{ p: 2, display: 'flex' }}>
+            <Stack spacing={0.5}>
+              <Typography fontWeight={700}>Account: {accounts[0]}</Typography>
+              <Typography fontWeight={700}>
+                Balance {userTokens} SCT
+              </Typography>
+              <Box sx={{ flexDirection: 'row-reverse', display: 'flex' }}>
+                <Button variant="contained" onClick={handleBuyMoreOnClick}>Buy More</Button>
+
+              </Box>
+            </Stack>
+          </Box>
+        </Card>
+
       </Container>
     </React.Fragment>
   );
