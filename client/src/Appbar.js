@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Box, AppBar, Toolbar } from '@mui/material';
 
-const Appbar = () => {
+const Appbar = ({ totalSupply }) => {
   return (
     <Box sx={{ flexGrow: 1, marginBottom: 2 }}>
       <AppBar position="static">
@@ -10,6 +10,9 @@ const Appbar = () => {
             AsTok: An assest tokenization project
           </Typography>
           {/* <Button color="inherit">Login</Button> */}
+          <Typography variant="h6" component="div">
+              Total Supply {totalSupply} SCT
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>
