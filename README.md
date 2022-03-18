@@ -3,3 +3,4 @@
 
 A project to mock asset tokenization platform where physical goods could be tokenized.
 
+Contracts deployed on Ropsten via Infura. UI live on https://asset-token.iamahsan.dev/

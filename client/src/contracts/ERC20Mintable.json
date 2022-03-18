@@ -408,7 +408,7 @@
         "id": 1541,
         "nodeType": "ImportDirective",
         "scope": 1568,
-        "sourceUnit": 1791,
+        "sourceUnit": 1758,
         "src": "112:26:9",
         "symbolAliases": [],
         "unitAlias": ""
@@ -441,10 +441,10 @@
               "id": 1545,
               "name": "MinterRole",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1790,
+              "referencedDeclaration": 1757,
               "src": "412:10:9",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MinterRole_$1790",
+                "typeIdentifier": "t_contract$_MinterRole_$1757",
                 "typeString": "contract MinterRole"
               }
             },
@@ -457,7 +457,7 @@
           26,
           838,
           916,
-          1790
+          1757
         ],
         "contractKind": "contract",
         "documentation": {
@@ -470,7 +470,7 @@
         "id": 1567,
         "linearizedBaseContracts": [
           1567,
-          1790,
+          1757,
           838,
           916,
           26
@@ -602,7 +602,7 @@
                   "name": "onlyMinter",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1723,
+                  "referencedDeclaration": 1690,
                   "src": "613:10:9",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -769,7 +769,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 1791,
+          "SourceUnit": 1758,
           "absolutePath": "project:/contracts/MinterRole.sol",
           "file": "./MinterRole.sol",
           "scope": 1568,
@@ -789,13 +789,13 @@
             26,
             838,
             916,
-            1790
+            1757
           ],
           "contractKind": "contract",
           "fullyImplemented": false,
           "linearizedBaseContracts": [
             1567,
-            1790,
+            1757,
             838,
             916,
             26
@@ -842,7 +842,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "MinterRole",
-                  "referencedDeclaration": 1790,
+                  "referencedDeclaration": 1757,
                   "type": "contract MinterRole"
                 },
                 "id": 1545,
@@ -986,7 +986,7 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 1723,
+                      "referencedDeclaration": 1690,
                       "type": "modifier ()",
                       "value": "onlyMinter"
                     },
@@ -1133,7 +1133,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.6",
-  "updatedAt": "2022-03-18T09:28:20.261Z",
+  "updatedAt": "2022-03-18T10:44:48.858Z",
   "devdoc": {
     "details": "Extension of {ERC20} that adds a set of accounts with the {MinterRole}, which have permission to mint (create) new tokens as they see fit. At construction, the deployer of the contract is the only minter.",
     "kind": "dev",
