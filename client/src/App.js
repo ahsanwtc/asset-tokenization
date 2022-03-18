@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Container, Typography, Card, Box, Stack, CssBaseline, TextField, Divider, Button } from '@mui/material';
 
 import { getWeb3, getContracts, getTokenSaleContractAddress } from './utils';
@@ -12,6 +12,7 @@ function App() {
   const [kycAddress, setKycAddress] = useState('');
   const [salesAddress, setSalesAddress] = useState('');
   const [userTokens, setUserTokens] = useState(0);
+  const [totalSypply, setTotalSupply] = useState(0);
 
   useEffect(() => {    
     const init = async () => {
@@ -19,14 +20,25 @@ function App() {
       const contracts = await getContracts(web3);
       const accounts = await web3.eth.getAccounts();
       const salesAddress = await getTokenSaleContractAddress(web3);
+      const totalSupply = await contracts.token.methods.totalSupply().call();
 
       setWeb3(web3);
       setContracts(contracts);
       setAccounts(accounts);
       setSalesAddress(salesAddress);
+      setTotalSupply(totalSupply);
     };
     init();
   }, []);
+
+  const updateUserTokens = useCallback(async () => {
+    const tokens = await contracts.token.methods.balanceOf(accounts[0]).call();
+    setUserTokens(tokens);
+  }, [contracts, accounts]);
+  
+  const listenToTokenTransfer = useCallback(() => {
+    contracts.token.events.Transfer({ to: accounts[0] }).on('data', updateUserTokens);
+  }, [accounts, contracts, updateUserTokens]);
 
   useEffect(() => {
     const init = async () => {
@@ -38,7 +50,7 @@ function App() {
       init();
     }
 
-  }, [contracts, accounts]);
+  }, [contracts, accounts, updateUserTokens, listenToTokenTransfer]);
 
   const handleSubmitOnClick = async () => {
 
@@ -54,14 +66,6 @@ function App() {
     await contracts.tokenSale.methods.buyTokens(accounts[0]).send({ from: accounts[0], value: web3.utils.toWei('1', 'wei') });
   };
 
-  const updateUserTokens = async () => {
-    const tokens = await contracts.token.methods.balanceOf(accounts[0]).call();
-    setUserTokens(tokens);
-  };
-
-  const listenToTokenTransfer = () => {
-    contracts.token.events.Transfer({ to: accounts[0] }).on('data', updateUserTokens);
-  };
 
   if (web3 === undefined || contracts === undefined || accounts.length === 0) {
     return <Loading />;
@@ -70,9 +74,8 @@ function App() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Appbar />
+      <Appbar totalSupply={totalSypply} />
       <Container maxWidth="md">
-
         <Card>
           <Box sx={{ p: 2, display: 'flex' }}>
             <Stack spacing={0.5}>
